@@ -2,9 +2,8 @@ import IPadressDetails from '../components/IPadressDetails'
 
 function HomePage() {
   return (
-    <section className="relative flex justify-center">
+    <section className="relative flex flex-col justify-center bg-blue-700 ">
       <img alt="" src="images/pattern-bg-desktop.png" className="w-full" />
-      <IPadressDetails />
       <header className="absolute mt-5 w-full">
         <h1 className="text-white text-center text-[32px] font-rubik">
           IP Address Tracker
@@ -19,6 +18,7 @@ function HomePage() {
           </button>
         </form>
       </header>
+      <IPadressDetails />
     </section>
   )
 }
