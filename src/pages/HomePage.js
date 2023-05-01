@@ -1,6 +1,24 @@
+import axios from 'axios'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { addIpAddressDetails } from '../slices.js/ipAddressDetailsSlice'
 import IPadressDetails from '../components/IPadressDetails'
 
 function HomePage() {
+  const ipAddressDetails = useSelector((state) => state.ipAddressDetails.value)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    getData()
+  }, [])
+
+  async function getData() {
+    const data = await axios.get(
+      'https://geo.ipify.org/api/v2/country?apiKey=at_lWM01gz3Ta7jyqG1QFsPMj5l1mFty&ipAddress=8.8.8.8'
+    )
+    dispatch(addIpAddressDetails(data.data))
+  }
+
   return (
     <section className="relative flex flex-col justify-center bg-blue-700 ">
       <img alt="" src="images/pattern-bg-desktop.png" className="w-full" />
@@ -18,7 +36,12 @@ function HomePage() {
           </button>
         </form>
       </header>
-      <IPadressDetails />
+      <IPadressDetails
+        ip_address={ipAddressDetails.ip}
+        location={`${ipAddressDetails?.location?.country}, ${ipAddressDetails?.location?.region}`}
+        time_zone={ipAddressDetails?.location?.timezone}
+        isp={ipAddressDetails.isp}
+      />
     </section>
   )
 }
