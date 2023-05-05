@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addIpAddressDetails } from '../slices/ipAddressDetailsSlice'
 import { handleFindIpAddress } from '../slices/ipAddressSlice'
@@ -10,16 +10,28 @@ function HomePage() {
   const IP_ADDRESS = useSelector((state) => state.ipAddress.value)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    // getData()
-  }, [])
+  const handleGetIpData = useCallback(
+    async (ipAddress) => {
+      const findIP = ipAddress ? `&ipAddress=${ipAddress}` : ''
+      const data = await axios.get(
+        `https://geo.ipify.org/api/v2/country?apiKey=at_lWM01gz3Ta7jyqG1QFsPMj5l1mFty${findIP}`
+      )
+      dispatch(addIpAddressDetails(data.data))
+    },
+    [dispatch]
+  )
 
-  async function getData(IP_ADDRESS) {
-    const data = await axios.get(
-      `https://geo.ipify.org/api/v2/country?apiKey=at_lWM01gz3Ta7jyqG1QFsPMj5l1mFty&ipAddress=${IP_ADDRESS}`
-    )
-    dispatch(addIpAddressDetails(data.data))
-  }
+  useEffect(() => {
+    handleGetIpData()
+  }, [handleGetIpData])
+
+  const handleSubmitIpAddress = useCallback(
+    async (e) => {
+      e.preventDefault()
+      await handleGetIpData(IP_ADDRESS)
+    },
+    [handleGetIpData, IP_ADDRESS]
+  )
 
   console.log(IP_ADDRESS)
   return (
@@ -29,13 +41,7 @@ function HomePage() {
         <h1 className="text-white text-center text-[32px] font-rubik">
           IP Address Tracker
         </h1>
-        <form
-          className="flex mt-5"
-          onSubmit={(e) => {
-            e.preventDefault()
-            console.log('Form: Clicked btn')
-          }}
-        >
+        <form className="flex mt-5" onSubmit={handleSubmitIpAddress}>
           <input
             className="w-[497px] px-5 h-[58px] rounded-l-2xl"
             placeholder="Search for any IP address or domain"
