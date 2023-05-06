@@ -35,13 +35,16 @@ function HomePage() {
 
   console.log(IP_ADDRESS)
   return (
-    <section className="relative flex flex-col justify-center bg-blue-700 ">
+    <section className="relative flex flex-col justify-center">
       <img alt="" src="images/pattern-bg-desktop.png" className="w-full" />
-      <header className="absolute mt-5 w-full">
-        <h1 className="text-white text-center text-[32px] font-rubik">
+      <header className="absolute top-0 mt-[20px] flex flex-col items-center w-full ">
+        <h1 className="text-white text-[32px] font-rubik">
           IP Address Tracker
         </h1>
-        <form className="flex mt-5" onSubmit={handleSubmitIpAddress}>
+        <form
+          className="flex mt-[30px] mb-[48px]"
+          onSubmit={handleSubmitIpAddress}
+        >
           <input
             className="w-[497px] px-5 h-[58px] rounded-l-2xl"
             placeholder="Search for any IP address or domain"
@@ -52,13 +55,13 @@ function HomePage() {
             <img alt="arrow" src="images/icon-arrow.svg" />
           </button>
         </form>
+        <IPadressDetails
+          ip_address={ipAddressDetails.ip}
+          location={`${ipAddressDetails?.location?.country}, ${ipAddressDetails?.location?.region}`}
+          time_zone={ipAddressDetails?.location?.timezone}
+          isp={ipAddressDetails.isp}
+        />
       </header>
-      <IPadressDetails
-        ip_address={ipAddressDetails.ip}
-        location={`${ipAddressDetails?.location?.country}, ${ipAddressDetails?.location?.region}`}
-        time_zone={ipAddressDetails?.location?.timezone}
-        isp={ipAddressDetails.isp}
-      />
     </section>
   )
 }
