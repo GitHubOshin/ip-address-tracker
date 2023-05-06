@@ -46,7 +46,7 @@ function HomePage() {
           onSubmit={handleSubmitIpAddress}
         >
           <input
-            className="w-[497px] px-5 h-[58px] rounded-l-2xl"
+            className="w-[497px] px-5 h-[58px] rounded-l-2xl focus:outline-none"
             placeholder="Search for any IP address or domain"
             onChange={(e) => dispatch(handleFindIpAddress(e.target.value))}
             value={IP_ADDRESS}
