@@ -3,19 +3,23 @@ import { useCallback, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addIpAddressDetails } from '../slices/ipAddressDetailsSlice'
 import { handleFindIpAddress } from '../slices/ipAddressSlice'
+import { handleIsloadingIP } from '../slices/isLoadingIP'
 import IPadressDetails from '../components/IPadressDetails'
 
 function HomePage() {
   const ipAddressDetails = useSelector((state) => state.ipAddressDetails.value)
   const IP_ADDRESS = useSelector((state) => state.ipAddress.value)
+  const isLoadingIP = useSelector((state) => state.isLoadingIP.value)
   const dispatch = useDispatch()
 
   const handleGetIpData = useCallback(
     async (ipAddress) => {
+      dispatch(handleIsloadingIP(true))
       const findIP = ipAddress ? `&ipAddress=${ipAddress}` : ''
       const data = await axios.get(
         `https://geo.ipify.org/api/v2/country?apiKey=at_lWM01gz3Ta7jyqG1QFsPMj5l1mFty${findIP}`
       )
+      dispatch(handleIsloadingIP(false))
       dispatch(addIpAddressDetails(data.data))
     },
     [dispatch]
@@ -33,7 +37,6 @@ function HomePage() {
     [handleGetIpData, IP_ADDRESS]
   )
 
-  console.log(IP_ADDRESS)
   return (
     <section className="relative flex flex-col justify-center">
       <img alt="" src="images/pattern-bg-desktop.png" className="w-full" />
@@ -60,6 +63,7 @@ function HomePage() {
           location={`${ipAddressDetails?.location?.country}, ${ipAddressDetails?.location?.region}`}
           time_zone={ipAddressDetails?.location?.timezone}
           isp={ipAddressDetails.isp}
+          isLoading={isLoadingIP}
         />
       </header>
     </section>
