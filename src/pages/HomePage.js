@@ -23,7 +23,6 @@ function HomePage() {
           `https://geo.ipify.org/api/v2/country?apiKey=at_lWM01gz3Ta7jyqG1QFsPMj5l1mFty${findIP}`
         )
         dispatch(addIpAddressDetails(data.data))
-        dispatch(handleIsloadingIP(false))
       } catch (error) {
         if (error.response === undefined) {
           dispatch(handleErrorMessage(`No Internet: ${error.message}`))
@@ -33,6 +32,7 @@ function HomePage() {
           )
         }
       }
+      dispatch(handleIsloadingIP(false))
     },
     [dispatch]
   )
