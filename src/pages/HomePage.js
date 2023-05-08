@@ -37,8 +37,6 @@ function HomePage() {
     [dispatch]
   )
 
-  console.log(IP_ADDRESS)
-
   useEffect(() => {
     handleGetIpData()
   }, [handleGetIpData])
