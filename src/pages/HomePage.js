@@ -4,12 +4,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { addIpAddressDetails } from '../slices/ipAddressDetailsSlice'
 import { handleFindIpAddress } from '../slices/ipAddressSlice'
 import { handleIsloadingIP } from '../slices/isLoadingIpSlice'
+import { handleErrorMessage } from '../slices/errorMessageSlice'
 import IPadressDetails from '../components/IPadressDetails'
 
 function HomePage() {
   const ipAddressDetails = useSelector((state) => state.ipAddressDetails.value)
   const IP_ADDRESS = useSelector((state) => state.ipAddress.value)
   const isLoadingIP = useSelector((state) => state.isLoadingIP.value)
+  const errorMessage = useSelector((state) => state.errorMessage.value)
   const dispatch = useDispatch()
 
   const handleGetIpData = useCallback(
@@ -23,11 +25,12 @@ function HomePage() {
         dispatch(addIpAddressDetails(data.data))
         dispatch(handleIsloadingIP(false))
       } catch (error) {
-        console.log('show error object', error)
         if (error.response === undefined) {
-          console.error('No Internet:', error.message)
+          dispatch(handleErrorMessage(`No Internet: ${error.message}`))
         } else {
-          console.error('User error:', error.response.data.messages)
+          dispatch(
+            handleErrorMessage(`User error: ${error.response.data.messages}`)
+          )
         }
       }
     },
@@ -75,6 +78,7 @@ function HomePage() {
           time_zone={ipAddressDetails?.location?.timezone}
           isp={ipAddressDetails.isp}
           isLoading={isLoadingIP}
+          errorMessage={errorMessage}
         />
       </header>
     </section>
