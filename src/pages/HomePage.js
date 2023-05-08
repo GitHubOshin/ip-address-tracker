@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { addIpAddressDetails } from '../slices/ipAddressDetailsSlice'
 import { handleFindIpAddress } from '../slices/ipAddressSlice'
-import { handleIsloadingIP } from '../slices/isLoadingIP'
+import { handleIsloadingIP } from '../slices/isLoadingIpSlice'
 import IPadressDetails from '../components/IPadressDetails'
 
 function HomePage() {
